@@ -1,0 +1,8 @@
+# Environment variables file
+.env
+
+# IDE files
+.idea/
+
+# Log files
+logs/

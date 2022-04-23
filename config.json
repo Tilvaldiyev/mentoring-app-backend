@@ -1,0 +1,15 @@
+{
+  "server": {
+    "port": 8081,
+    "mode": false
+  },
+  "db": {
+    "name": "mentoring_app",
+    "host": "206.189.101.125",
+    "port": 5432,
+    "ssl_mode": "disable",
+    "time_zone": "Asia/Almaty",
+    "migrate": false,
+    "username": "postgres"
+  }
+}

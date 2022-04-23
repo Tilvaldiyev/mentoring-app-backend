@@ -1,0 +1,658 @@
+basePath: /
+definitions:
+  model.Article:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      expertise_ids:
+        items:
+          type: integer
+        type: array
+      id:
+        type: integer
+      img_url:
+        type: string
+      level_id:
+        type: integer
+      likes:
+        type: integer
+      title:
+        type: string
+      user_id:
+        type: integer
+      views:
+        type: integer
+    type: object
+  model.Country:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  model.Expertise:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  model.Language:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  model.Level:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  model.MentorResponse:
+    properties:
+      country:
+        type: string
+      email:
+        type: string
+      expertise:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: integer
+      info:
+        type: string
+      language:
+        type: string
+      last_name:
+        type: string
+      level:
+        type: string
+      title:
+        type: string
+    type: object
+  model.PasswordRecoveryInput:
+    properties:
+      email:
+        type: string
+      secret_code:
+        type: string
+    type: object
+  model.Posts:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      user_id:
+        type: integer
+    type: object
+  model.Response:
+    properties:
+      isSuccess:
+        type: boolean
+      message:
+        type: string
+    type: object
+  model.SignInInput:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  model.UpdateArticleInput:
+    properties:
+      description:
+        type: string
+      title:
+        type: string
+    type: object
+  model.UserType:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  model.Users:
+    properties:
+      country_id:
+        type: integer
+      email:
+        type: string
+      expertise_ids:
+        items:
+          type: integer
+        type: array
+      first_name:
+        type: string
+      id:
+        type: integer
+      info:
+        type: string
+      language_id:
+        type: integer
+      last_name:
+        type: string
+      level_id:
+        type: integer
+      password:
+        type: string
+      title:
+        type: string
+      user_type_id:
+        type: integer
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: API for virtual mentoring application
+  title: Mentoring App API
+  version: "1.0"
+paths:
+  /api/v1/article:
+    post:
+      consumes:
+      - application/json
+      description: Create article
+      parameters:
+      - description: request body
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/model.Article'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/model.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Create article
+      tags:
+      - Article
+  /api/v1/article/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete article
+      parameters:
+      - description: ID article
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/model.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete article
+      tags:
+      - Article
+    get:
+      consumes:
+      - application/json
+      description: Get article info by ID
+      parameters:
+      - description: ID article
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Article'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/model.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Get article
+      tags:
+      - Article
+    put:
+      consumes:
+      - application/json
+      description: Update article
+      parameters:
+      - description: ID article
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: request body
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/model.UpdateArticleInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/model.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Update article
+      tags:
+      - Article
+  /api/v1/mentors:
+    get:
+      consumes:
+      - application/json
+      description: Get mentors list
+      parameters:
+      - description: search by expertise
+        in: query
+        name: expertise
+        type: string
+      - description: search by country
+        in: query
+        name: country
+        type: string
+      - description: search by language
+        in: query
+        name: language
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.MentorResponse'
+            type: array
+        "204":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/model.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Get mentors list
+      tags:
+      - Mentor
+  /api/v1/post:
+    post:
+      consumes:
+      - application/json
+      description: Create post
+      parameters:
+      - description: request body
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/model.Posts'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/model.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Create post
+      tags:
+      - Post
+  /api/v1/post/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete post
+      parameters:
+      - description: ID article
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/model.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete post
+      tags:
+      - Post
+    get:
+      consumes:
+      - application/json
+      description: Get post info by ID
+      parameters:
+      - description: ID article
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Posts'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/model.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Get post
+      tags:
+      - Post
+  /auth/forgot-password:
+    post:
+      consumes:
+      - application/json
+      description: Send secret code to email when forgot password
+      parameters:
+      - description: request body
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/model.PasswordRecoveryInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: Send secret code to email
+      tags:
+      - Auth
+  /auth/recover:
+    put:
+      consumes:
+      - application/json
+      description: Update password
+      parameters:
+      - description: request body
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/model.SignInInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: Update password
+      tags:
+      - Auth
+  /auth/sign-in:
+    post:
+      consumes:
+      - application/json
+      description: User authorization
+      parameters:
+      - description: request body
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/model.SignInInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: Authorization
+      tags:
+      - Auth
+  /auth/sign-up:
+    post:
+      consumes:
+      - application/json
+      description: User registration
+      parameters:
+      - description: request body
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/model.Users'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: User registration
+      tags:
+      - Auth
+  /auth/verify-secret-code:
+    post:
+      consumes:
+      - application/json
+      description: Verify sent secret code
+      parameters:
+      - description: request body
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/model.PasswordRecoveryInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: Verify sent secret code
+      tags:
+      - Auth
+  /countries:
+    get:
+      consumes:
+      - application/json
+      description: Get list of countries
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Country'
+            type: array
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: Get list of countries
+      tags:
+      - ""
+  /expertises:
+    get:
+      consumes:
+      - application/json
+      description: Get list of user levels
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Level'
+            type: array
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: Get list of user levels
+      tags:
+      - ""
+  /languages:
+    get:
+      consumes:
+      - application/json
+      description: Get list of languages
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Language'
+            type: array
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: Get list of languages
+      tags:
+      - ""
+  /user-types:
+    get:
+      consumes:
+      - application/json
+      description: Get list of user types
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.UserType'
+            type: array
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: Get list of user types
+      tags:
+      - ""
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
